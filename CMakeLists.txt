@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.18)
-project (network VERSION 1.0.0 LANGUAGES CXX)
+project (network VERSION 0.0.1 LANGUAGES CXX)
 
 # Determine if stun is built as a subproject (using add_subdirectory) or if it is the master project.
 
