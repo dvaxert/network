@@ -1,5 +1,6 @@
-#include "network/structs/endpoint.h"
+#include "wormhole/network/structs/endpoint.h"
 
+namespace wh {
 namespace net {
 
 Endpoint::Endpoint() : host(), service() {}
@@ -31,3 +32,4 @@ std::ostream& operator<<(std::ostream& stream, const Endpoint& ep) {
 }
 
 }  // namespace net
+}  // namespace wh

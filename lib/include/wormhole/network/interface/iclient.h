@@ -6,10 +6,11 @@
 #include <string>
 #include <vector>
 
-#include "network/structs/endpoint.h"
+#include "wormhole/network/structs/endpoint.h"
 
 using namespace std::chrono_literals;
 
+namespace wh {
 namespace net {
 
 class IClient {
@@ -38,5 +39,6 @@ class IClient {
 };
 
 }  // namespace net
+}  // namespace wh
 
 #endif  // NETWORK_LIB_INCLUDE_NETWORK_INTERFACE_ICLIENT_H_
