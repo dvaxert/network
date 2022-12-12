@@ -3,12 +3,12 @@
 
 #include <boost/asio/ip/address.hpp>
 
-namespace wh {
-namespace net {
+namespace wormhole {
+namespace network {
 
 using IpAddress = boost::asio::ip::address;
 
-}  // namespace net
-}  // namespace wh
+}  // namespace network
+}  // namespace wormhole
 
 #endif  // NETWORK_LIB_INCLUDE_WORMHOLE_NETWORK_TYPES_H_

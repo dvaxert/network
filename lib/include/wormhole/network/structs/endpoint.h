@@ -6,8 +6,8 @@
 
 #include "wormhole/network/types.h"
 
-namespace wh {
-namespace net {
+namespace wormhole {
+namespace network {
 
 struct Endpoint {
   std::string host;
@@ -28,7 +28,7 @@ struct Endpoint {
 std::ostream& operator==(const Endpoint& lhd, const Endpoint& rhd);
 std::ostream& operator<<(std::ostream& stream, const Endpoint& ep);
 
-}  // namespace net
-}  // namespace wh
+}  // namespace network
+}  // namespace wormhole
 
 #endif  // NETWORK_LIB_INCLUDE_WORMHOLE_NETWORK_STRUCTS_ENDPOINT_H_

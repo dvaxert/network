@@ -25,13 +25,26 @@ include(CMakeDependentOption)
 cmake_dependent_option (NETWORK_BUILD_SHARED_LIBS "Build the project as a dynamic library" "${BUILD_SHARED_LIBS}" "NETWORK_MASTER_PROJECT" ${NETWORK_MASTER_PROJECT})
 cmake_dependent_option (NETWORK_BUILD_TESTING "Build tests for the project" "${BUILD_TESTING}" "NETWORK_MASTER_PROJECT" ${NETWORK_MASTER_PROJECT})
 
-option (NETWORK_BUILD_APPS "Build applications" OFF)
-option (NETWORK_INSTALL "Generate a target for project installation" ON)
+option (NETWORK_BUILD_APPS "Build applications" ON)
 option (NETWORK_BUILD_EXAMPLE "Build examples for a project" OFF)
+option (NETWORK_INSTALL "Generate a target for project installation" ON)
 option (NETWORK_GENERATE_DOCUMENTATION "Generate documentation when building a project" OFF)
 option (NETWORK_PEDANTIC "Enable the display of additional warnings" OFF)
 option (NETWORK_WERROR "Handle all compiler warnings with errors" OFF)
 option (NETWORK_MSVC_STATIC_RUNTIME "Link static runtime libraries" OFF)
+option (NETWORK_ENABLE_COVERAGE "Run coverage" OFF)
+option (NETWORK_ENABLE_SANITIZERS "Run static analysis" OFF)
+
+message (STATUS "NETWORK_BUILD_SHARED_LIBS - ${NETWORK_BUILD_SHARED_LIBS}")
+message (STATUS "NETWORK_BUILD_TESTING - ${NETWORK_BUILD_TESTING}")
+message (STATUS "NETWORK_BUILD_APPS - ${NETWORK_BUILD_APPS}")
+message (STATUS "NETWORK_BUILD_EXAMPLE - ${NETWORK_BUILD_EXAMPLE}")
+message (STATUS "NETWORK_INSTALL - ${NETWORK_INSTALL}")
+message (STATUS "NETWORK_GENERATE_DOCUMENTATION - ${NETWORK_GENERATE_DOCUMENTATION}")
+message (STATUS "NETWORK_PEDANTIC - ${NETWORK_PEDANTIC}")
+message (STATUS "NETWORK_WERROR - ${NETWORK_WERROR}")
+message (STATUS "NETWORK_ENABLE_COVERAGE - ${NETWORK_ENABLE_COVERAGE}")
+message (STATUS "NETWORK_ENABLE_SANITIZERS - ${NETWORK_ENABLE_SANITIZERS}")
 
 
 # Configuring project output directories
@@ -79,10 +92,21 @@ if (WIN32)
     endif ()
 endif ()
 
-if (NETWORK_BUILD_TESTING)
-    include (CTest)
-    enable_testing ()
+
+# Enable coverage
+
+if (NETWORK_ENABLE_COVERAGE AND UNIX)
+    list (APPEND CMAKE_CXX_FLAGS "--coverage -g -O0")
+    find_package(Threads REQUIRED)
 endif ()
+
+
+# Enable sanitizers
+
+if(NETWORK_ENABLE_SANITIZERS)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -fno-omit-frame-pointer -fsanitize=address -fsanitize=leak -fsanitize=undefined")
+endif()
+
 
 # Adding subdirectories to the project
 
@@ -93,6 +117,8 @@ if (NETWORK_BUILD_APPS)
 endif ()
 
 if (NETWORK_BUILD_TESTING)
+    include (CTest)
+    enable_testing ()
     add_subdirectory (test)
 endif ()
 

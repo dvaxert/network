@@ -10,8 +10,8 @@
 
 using namespace std::chrono_literals;
 
-namespace wh {
-namespace net {
+namespace wormhole {
+namespace network {
 
 class IClient {
  public:
@@ -26,19 +26,16 @@ class IClient {
 
   virtual bool IsConnected() const = 0;
 
-  virtual void Send(const std::vector<uint8_t>& raw_data,
-                    const std::chrono::milliseconds& timeout = 0ms) = 0;
-  virtual void Send(const std::vector<uint8_t>& raw_data,
-                    const std::chrono::system_clock::time_point& deadline) = 0;
+  virtual void Send(const std::vector<uint8_t>& raw_data, const std::chrono::milliseconds& timeout = 0ms) = 0;
+  virtual void Send(const std::vector<uint8_t>& raw_data, const std::chrono::system_clock::time_point& deadline) = 0;
   virtual void Send(const std::string& message, const std::chrono::milliseconds& timeout = 0ms) = 0;
-  virtual void Send(const std::string& message,
-                    const std::chrono::system_clock::time_point& deadline) = 0;
+  virtual void Send(const std::string& message, const std::chrono::system_clock::time_point& deadline) = 0;
 
   virtual std::vector<uint8_t> Reseive(const std::chrono::milliseconds& timeout = 0ms) = 0;
   virtual std::vector<uint8_t> Reseive(const std::chrono::system_clock::time_point& deadline) = 0;
 };
 
-}  // namespace net
-}  // namespace wh
+}  // namespace network
+}  // namespace wormhole
 
 #endif  // NETWORK_LIB_INCLUDE_NETWORK_INTERFACE_ICLIENT_H_

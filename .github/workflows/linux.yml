@@ -1,0 +1,62 @@
+name: Linux
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        buildShared: [ 'ON', 'OFF' ]
+
+    name: Linux X64 buildShared=${{matrix.buildShared}}
+
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Install CMake.
+        uses: lukka/get-cmake@latest
+      
+      - name: Restore artifacts, or setup vcpkg (do not install any package)
+        uses: lukka/run-vcpkg@v10
+        id: runvcpkg
+        with:
+          vcpkgDirectory: '${{github.workspace}}/vcpkg'
+          vcpkgGitCommitId: 'fd1bdf6ad343e390a5d043b23f0022b3188b5ac2'
+          vcpkgJsonGlob: '**/vcpkg.json'
+
+      - name: Configure CMake
+        run: 'cmake -S ${{github.workspace}} -B ${{github.workspace}}/build -G "Ninja" 
+          -DNETWORK_BUILD_SHARED_LIBS=${{matrix.buildShared}} 
+          -DNETWORK_BUILD_TESTING=ON 
+          -DNETWORK_INSTALL=OFF 
+          -DNETWORK_BUILD_EXAMPLE=OFF 
+          -DNETWORK_GENERATE_DOCUMENTATION=OFF 
+          -DNETWORK_PEDANTIC=ON 
+          -DNETWORK_WERROR=ON 
+          -DNETWORK_ENABLE_COVERAGE=OFF
+          -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/vcpkg/scripts/buildsystems/vcpkg.cmake'
+
+      - name: Build Debug
+        run: 'cmake --build ${{github.workspace}}/build --config Debug'
+        
+      - name: Build Release
+        run: 'cmake --build ${{github.workspace}}/build --config Release'
+        
+      - name: Test Debug
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C Debug -VV
+        
+      - name: Test Release
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C Release -VV
+
+      - name: Coverage
+        uses: codecov/codecov-action@v3

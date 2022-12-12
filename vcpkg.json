@@ -1,0 +1,12 @@
+{
+  "name": "utils",
+  "version-string": "1.0.0",
+  "homepage": "https://github.com/dvaxert/utils",
+  "description": "A subproject with different utilities used in the modules of the wormhole project.",
+  "dependencies": [
+    "fmt",
+    "spdlog",
+    "boost",
+    "gtest"
+  ]
+}

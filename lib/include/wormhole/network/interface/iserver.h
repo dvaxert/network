@@ -1,7 +1,8 @@
 #ifndef NETWORK_LIB_INCLUDE_NETWORK_INTERFACE_ISERVER_H_
 #define NETWORK_LIB_INCLUDE_NETWORK_INTERFACE_ISERVER_H_
 
-namespace net {
+namespace wormhole {
+namespace network {
 
 class IServer {
  public:
@@ -12,6 +13,7 @@ class IServer {
   virtual void Stop() = 0;
 };
 
-}  // namespace net
+}  // namespace network
+}  // namespace wormhole
 
 #endif  // NETWORK_LIB_INCLUDE_NETWORK_INTERFACE_ISERVER_H_
